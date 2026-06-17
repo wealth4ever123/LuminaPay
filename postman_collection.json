@@ -1,0 +1,100 @@
+{
+  "info": {
+    "name": "LuminaPay API",
+    "_postman_id": "luminapay-v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3001" }
+  ],
+  "item": [
+    {
+      "name": "Remit",
+      "item": [
+        {
+          "name": "POST /remit",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/remit",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderKeypair\": \"SXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"destAddress\": \"GDESTXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"sendAsset\": { \"code\": \"USDC\", \"issuer\": \"GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN\" },\n  \"destAsset\": { \"code\": \"NGNC\", \"issuer\": \"GAWODAROMJ33V5YDFY3EFPKQ2GCHGQ4GGZSM67DKGP7LERG36GDWWCQ\" },\n  \"amount\": \"10\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Corridors",
+      "item": [
+        {
+          "name": "GET /corridors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/corridors?amount=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["corridors"],
+              "query": [{ "key": "amount", "value": "10" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Anchor",
+      "item": [
+        {
+          "name": "POST /anchor/register (SEP-12)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/anchor/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account\": \"GABCXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"first_name\": \"Amara\",\n  \"last_name\": \"Okafor\",\n  \"email_address\": \"amara@example.com\",\n  \"bank_account_number\": \"0123456789\",\n  \"bank_number\": \"058\",\n  \"mobile_number\": \"+2348012345678\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /anchor/deposit (SEP-6)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/anchor/deposit",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"asset_code\": \"USDC\",\n  \"account\": \"GABCXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"amount\": \"100\",\n  \"memo\": \"LuminaPay deposit\"\n}"
+            }
+          }
+        },
+        {
+          "name": "POST /anchor/withdraw (SEP-6)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/anchor/withdraw",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"asset_code\": \"NGNC\",\n  \"account\": \"GABCXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\n  \"amount\": \"5000\",\n  \"dest\": \"0123456789\",\n  \"dest_extra\": \"058\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "WebSocket /status",
+      "item": [
+        {
+          "name": "WS watch tx (Socket.IO)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/status",
+            "description": "Connect via Socket.IO to namespace /status. Emit event 'watch' with txHash string. Listen on 'tx:<hash>' for status updates.\n\nExample (browser/node):\n  const socket = io('http://localhost:3001/status');\n  socket.emit('watch', '<txHash>');\n  socket.on('tx:<txHash>', (data) => console.log(data));"
+          }
+        }
+      ]
+    }
+  ]
+}
